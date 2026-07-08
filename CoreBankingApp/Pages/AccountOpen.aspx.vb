@@ -23,7 +23,13 @@ hfAccount.Value=a.AccountNumber:lbl.CssClass="text-success":lbl.Text="Provisione
 End Sub
 Protected Sub btnFunding_Click(sender As Object,e As EventArgs) Handles btnFunding.Click
 If String.IsNullOrWhiteSpace(hfAccount.Value) Then lbl.CssClass="text-danger":lbl.Text="Provision first":Return
-Dim m=s.ApplyInitialFunding(hfAccount.Value,Decimal.Parse(txtAmount.Text),ddlChannel.SelectedValue)
+Dim amount As Decimal
+If Not Decimal.TryParse(txtAmount.Text, amount) Then
+lbl.CssClass="text-danger"
+lbl.Text="Funding amount must be numeric."
+Return
+End If
+Dim m=s.ApplyInitialFunding(hfAccount.Value,amount,ddlChannel.SelectedValue)
 lbl.CssClass=If(m.Contains("applied"),"text-success","text-danger"):lbl.Text=m
 End Sub
 End Class
